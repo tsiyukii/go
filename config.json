@@ -1,44 +1,40 @@
 {
+    "log": {
+        "access": "/var/log/v2ray/access.log",
+        "error": "/var/log/v2ray/error.log",
+        "loglevel": "warning"
+    },
     "inbounds": [
         {
-            "port": 23213, //你的中转节点入站端口
-            "listen": "0.0.0.0",
-            "protocol": "dokodemo-door",
+            "port": 2351, //端口
+            "protocol": "vmess", // 入站协议 VMess
             "settings": {
-                "address": "172.31.100.205", //你获取到的节点信息内的境外节点ip
-                "port": 2351, //你获取到的节点信息内的境外节点端口
-                "network": "tcp,udp"
-            },
-            "tag": "",
-            "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls"
+                "clients": [
+                    {
+                        "id": "cb8dea4c-298a-11ec-9621-0242ac130002", // UUID
+                        "level": 1, // 用户等级
+                        "alterId": 10 // 额外ID
+                    }
                 ]
             }
         }
     ],
     "outbounds": [
         {
-            "protocol": "freedom",
-            "settings": {}
-        },
-        {
-            "protocol": "blackhole",
-            "settings": {},
-            "tag": "blocked"
-        }
-    ],
-    "routing": {
-        "rules": [
-            {
-                "type": "field",
-                "ip": [
-                    "geoip:private"
-                ],
-                "outboundTag": "blocked"
+            "protocol": "vmess", // 出口协议
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "172.31.100.205", // 国外服务器地址
+                        "port": 2351, // 国外服务器端口
+                        "users": [
+                            {
+                                "id": "cb8dea4c-298a-11ec-9621-0242ac130002" // 用户 UUID，须与国外服务器端配置相同
+                            }
+                        ]
+                    }
+                ]
             }
-        ]
-    }
+        },
+
 }
